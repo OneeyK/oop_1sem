@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+
+void Decrement(int k)
+{
+    int mask = 1;
+    while ((k & mask) == 0)
+    {
+        k ^= mask;
+        mask = mask << 1;
+    }
+    k ^= mask;
+    cout << k;
+}
+
+    bool Compare(int n, int m)
+    {
+    bool output = false;
+    char res = '=';
+
+    if (((n >> 31) == 0) && ((m >> 31) == 0))
+    {
+        for (int i = sizeof(int) * 8 - 1; i >= 0; --i)
+        {
+            int z = 1 << i;
+            res = res == '=' ? (
+                (n & z ^ m & z) != 0 ? ((n & z) != 0 ? '>' : '<') : '='
+                ) : res;
+        }
+    }
+    else if (((n >> 31) != 0) && ((m >> 31) != 0))
+    {
+        for (int i = sizeof(int) * 8 - 1; i >= 0; --i)
+        {
+            int z = 1 << i;
+            res = res == '=' ? (
+                (~n & z ^ ~m & z) != 0 ? ((~n & z) != 0 ? '<' : '>') : '='
+                ) : res;
+        }
+    }
+    else if (((n >> 31) == 0) && ((m >> 31) != 0)) res = '>'; else res = '<';
+    output = (res == '=') ? (false) : (res == '>' ? false : true);
+    return output;
+}
+
+int main()
+{
+    int k = -31;
+    int n = 14;
+    int m = 19;
+    Decrement(k);
+    bool q = Compare(n, m);
+}
