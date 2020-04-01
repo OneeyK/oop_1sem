@@ -1,4 +1,3 @@
-Юра, [01.04.20 15:15]
 using System;
 namespace laba2_oop
 {
