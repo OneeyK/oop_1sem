@@ -1,0 +1,93 @@
+#include <iostream>
+
+using namespace std;
+
+template<class T>
+class CharList {
+  struct DoubleNode {
+    T data;
+    DoubleNode* prev;
+    DoubleNode* next;
+
+    DoubleNode(const T& _data)
+      : data(_data)
+      , prev(nullptr)
+      , next(nullptr)
+    {
+    }
+  };
+
+  DoubleNode* head;
+  DoubleNode* tail;
+  int count;
+
+public:
+  CharList()
+    : head(nullptr)
+    , tail(nullptr)
+    , count(0)
+  {
+  }
+
+  void Add(const T& data) {
+    DoubleNode* node = new DoubleNode(data);
+    if (head == nullptr) {
+      head = node;
+    } else {
+      tail->next = node;
+      node->prev = tail;
+    }
+    tail = node;
+    count++;
+  }
+
+  int CountEven() {
+    return count / 2;
+  }
+
+  void Remove(const T& data) {
+    DoubleNode* current = head;
+    while (current != nullptr) {
+      if (current->data == data) {
+        break;
+      }
+      current = current->next;
+    }
+    if (current != nullptr) {
+      if (current->next != nullptr) {
+        current->next->prev = current->prev;
+      } else {
+        tail = current->prev;
+      }
+      if (current->prev != nullptr) {
+        current->prev->next = current->next;
+      } else {
+        head = current->next;
+      }
+      delete current;
+      count--;
+    }
+  }
+
+  void DeleteMoreThanA() {
+    DoubleNode* current = head;
+    while (current != nullptr) {
+      if (current->data > 'a') {
+        Remove(current->data);
+      }
+      current = current->next;
+    }
+  }
+};
+
+int main() {
+  CharList<char> charList;
+  charList.Add(']');
+  charList.Add('g');
+  charList.Add('f');
+  charList.Add('q');
+  charList.Add('x');
+  charList.Add('a');
+  charList.DeleteMoreThanA();
+  return 0;
+}
